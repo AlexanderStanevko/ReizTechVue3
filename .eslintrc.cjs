@@ -28,5 +28,6 @@ module.exports = {
     }],
     quotes: ['error', 'single', { avoidEscape: true }],
     'import/prefer-default-export': 'off',
+    'linebreak-style': 'off',
   },
 }

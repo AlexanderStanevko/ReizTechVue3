@@ -10,7 +10,7 @@ import {
 } from 'vue'
 
 export default defineComponent({
-  name: 'HomeView',
+  name: 'HomePage',
   setup() {
   },
 })

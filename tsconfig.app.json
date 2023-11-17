@@ -30,8 +30,8 @@
       "types": [
         "src/types/index.ts"
       ],
-      "views/*": [
-        "src/views/*"
+      "pages/*": [
+        "src/pages/*"
       ],
       "router/*": [
         "src/router/*"
