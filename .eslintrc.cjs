@@ -27,5 +27,6 @@ module.exports = {
       shouldMatchCase: false,
     }],
     quotes: ['error', 'single', { avoidEscape: true }],
+    'import/prefer-default-export': 'off',
   },
 }
