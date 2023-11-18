@@ -74,6 +74,7 @@ export default defineComponent({
       default: false,
     },
   },
+  emits: ['update:modelValue'],
   setup(props, { emit, slots }) {
     const uuid = UniqueID().getID()
     const isFocused = ref(false)
@@ -177,6 +178,7 @@ export default defineComponent({
 }
 label {
   text-align: left;
-  color: #000;
+  color: var(--vt-c-black);
+  font-size: 16px;
 }
 </style>
