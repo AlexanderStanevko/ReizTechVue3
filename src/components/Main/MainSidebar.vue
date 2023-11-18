@@ -1,22 +1,22 @@
 <template>
   <aside class="sidebar">
-    <nav>
-      <ul>
-        <li><router-link to="/">Главная</router-link></li>
-        <li><router-link to="/products">Продукты</router-link></li>
-        <!-- Добавьте дополнительные пункты меню здесь -->
-      </ul>
+    <div class="sidebar__title">Sales.</div>
+    <nav class="sidebar__menu">
+      <MenuList />
     </nav>
   </aside>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import MenuList from 'components/SidebarMenu/MenuList.vue'
 
 export default defineComponent({
   name: 'MainSidebar',
+  components: {
+    MenuList,
+  },
   setup() {
-    // Логика для боковой панели, если она вам нужна
   },
 })
 </script>
@@ -24,24 +24,38 @@ export default defineComponent({
 <style lang="scss" scoped>
 .sidebar {
   background-color: var(--vt-c-white);
-  width: 200px;
-  padding: 1rem;
+  width: 230px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  &__title {
+    color: var(--vt-c-primary);
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    font-weight: bold;
+  }
 
-    li {
-      margin-bottom: 0.5rem;
-    }
+  &__menu {
+    flex-grow: 1;
 
-    a {
-      text-decoration: none;
-      color: #333;
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
 
-      &:hover {
-        color: #000;
+      li {
+        margin-bottom: 0.5rem;
+      }
+
+      a {
+        text-decoration: none;
+        color: var(--vt-c-text);
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: var(--vt-c-text-hover);
+        }
       }
     }
   }
