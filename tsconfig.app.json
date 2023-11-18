@@ -33,6 +33,9 @@
       "pages/*": [
         "src/pages/*"
       ],
+      "layouts/*": [
+        "src/layouts/*"
+      ],
       "router/*": [
         "src/router/*"
       ],
@@ -41,6 +44,9 @@
       ],
       "utils/*": [
         "src/utils/*"
+      ],
+      "hooks/*": [
+        "src/hooks/*"
       ]
     }
   }

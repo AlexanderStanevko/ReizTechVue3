@@ -1,6 +1,6 @@
 <template>
   <main>
-    Reiz Tech Dashboard
+    Reiz Tech Dashboard for Products
   </main>
 </template>
 
@@ -10,7 +10,7 @@ import {
 } from 'vue'
 
 export default defineComponent({
-  name: 'HomePage',
+  name: 'ProductsPage',
   setup() {
   },
 })
