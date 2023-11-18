@@ -1,61 +1,7 @@
-<!-- <template>
-  <div class="main-layout">
-    <MainSidebar v-if="isDesktop"/>
-    <div class="right-section">
-      <MainHeader class=""/>
-      <main class="main-content">
-        <RouterView />
-      </main>
-    </div>
-  </div>
-</template>
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-import MainHeader from 'components/main/MainHeader.vue'
-import MainSidebar from 'components/main/MainSidebar.vue'
-import responsive from 'utils/responsive'
-
-export default defineComponent({
-  name: 'MainLayout',
-  components: {
-    MainHeader,
-    MainSidebar,
-  },
-  setup() {
-    return {
-      ...responsive,
-    }
-  },
-})
-</script>
-
-<style lang="scss" scoped>
-.main-layout,
-.right-section {
-  display: flex;
-  flex-grow: 1;
-}
-
-.main-layout {
-  background-color: var(--vt-c-white-soft);
-  height: 100vh;
-}
-.right-section {
-  flex-direction: column;
-  padding: 2rem;
-}
-
-.main-content {
-  flex-grow: 1;
-  overflow-y: auto;
-}
-</style> -->
-
 <template>
   <div class="layout">
-    <MainSidebar 
-      v-if="isDesktop" 
+    <MainSidebar
+      v-if="isDesktop"
       class="layout__sidebar"
     />
     <div class="layout__content">
@@ -95,7 +41,14 @@ export default defineComponent({
   flex-grow: 1;
 
   &__sidebar {
-    // Стили для боковой панели
+    transition: transform 0.9s ease-in-out;
+    transform: translateX(0);
+  }
+
+  @media (max-width: 768px) { // Пример медиа-запроса для мобильных устройств
+    &__sidebar {
+      transform: translateX(-100%); // Скрытие боковой панели
+    }
   }
 
   &__content {

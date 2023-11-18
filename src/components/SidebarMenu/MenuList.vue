@@ -6,14 +6,17 @@
         :key="item.title"
         class="menu-list__item"
       >
-        <MenuListItem :item="item" />
+        <MenuListItem
+        :item="item"
+        @selectMenuItem="onSelectItem"
+        />
       </li>
     </ul>
   </nav>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import MenuListItem from 'components/SidebarMenu/MenuListItem.vue'
 import type { MenuItem } from 'types'
 
@@ -23,18 +26,40 @@ export default defineComponent({
     MenuListItem,
   },
   setup() {
-    const menuItems: MenuItem[] = [
-      { title: 'Dashboard', icon: 'element-3.svg', link: '/dashboard' },
-      { title: 'Lab Test', icon: 'clipboard-tick.svg', link: '/dashboard' },
-      { title: 'Appointment', icon: 'calendar-tick.svg', link: '/dashboard' },
-      { title: 'Medicine Order', icon: 'bag-tick-2.svg', link: '/dashboard' },
-      { title: 'Message', icon: 'sms.svg', link: '/dashboard' },
-      { title: 'Payment', icon: 'empty-wallet.svg', link: '/dashboard' },
-      { title: 'Settings', icon: 'setting-2.svg', link: '/dashboard' },
-    ]
+    const menuItems = ref<MenuItem[]>([
+      {
+        title: 'Dashboard', icon: 'element-3.svg', link: '/dashboard', active: false,
+      },
+      {
+        title: 'Lab Test', icon: 'clipboard-tick.svg', link: '/dashboard', active: false,
+      },
+      {
+        title: 'Appointment', icon: 'calendar-tick.svg', link: '/dashboard', active: false,
+      },
+      {
+        title: 'Medicine Order', icon: 'bag-tick-2.svg', link: '/dashboard', active: false,
+      },
+      {
+        title: 'Message', icon: 'sms.svg', link: '/dashboard', active: false,
+      },
+      {
+        title: 'Payment', icon: 'empty-wallet.svg', link: '/dashboard', active: false,
+      },
+      {
+        title: 'Settings', icon: 'setting-2.svg', link: '/dashboard', active: false,
+      },
+    ])
+
+    const onSelectItem = (selectedTitle: string) => {
+      menuItems.value = menuItems.value.map((item) => ({
+        ...item,
+        active: item.title === selectedTitle,
+      }))
+    }
 
     return {
       menuItems,
+      onSelectItem,
     }
   },
 })

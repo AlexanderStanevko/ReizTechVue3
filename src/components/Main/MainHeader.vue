@@ -1,5 +1,14 @@
 <template>
   <header class="main-header">
+    <div
+      v-if="isMobile"
+      class="main-header__mobile-menu"
+    >
+    <img
+      src="src/assets/svg/menu-hamburger.svg"
+      alt="Prepend Icon"
+    >
+    </div>
     <AppInput
       v-model="searchValue"
       clearable
@@ -26,6 +35,7 @@ import { defineComponent, ref } from 'vue'
 import AppInput from 'components/App/AppInput.vue'
 import ProfileNotification from 'components/Profile/ProfileNotification.vue'
 import ProfileAvatar from 'components/Profile/ProfileAvatar.vue'
+import responsive from 'utils/responsive'
 
 export default defineComponent({
   name: 'MainHeader',
@@ -39,6 +49,7 @@ export default defineComponent({
 
     return {
       searchValue,
+      ...responsive,
     }
   },
 })
@@ -63,6 +74,9 @@ export default defineComponent({
     justify-content: space-between;
     gap: 20px;
     margin-left: 20px;
+  }
+  &__mobile-menu {
+    margin-right: 20px;
   }
 }
 </style>
