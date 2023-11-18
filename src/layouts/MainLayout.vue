@@ -1,6 +1,6 @@
 <template>
   <div class="main-layout">
-    <MainSidebar />
+    <MainSidebar v-if="isDesktop"/>
     <div class="right-section">
       <MainHeader />
       <main class="main-content">
@@ -14,6 +14,7 @@
 import { defineComponent } from 'vue'
 import MainHeader from 'components/main/MainHeader.vue'
 import MainSidebar from 'components/main/MainSidebar.vue'
+import responsive from 'utils/responsive'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -22,25 +23,31 @@ export default defineComponent({
     MainSidebar,
   },
   setup() {
+    return {
+      ...responsive,
+    }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-.main-layout {
+.main-layout,
+.right-section {
   display: flex;
-  height: 100vh;
+  flex-grow: 1;
 }
 
+.main-layout {
+  background-color: var(--vt-c-white-soft);
+  height: 100vh;
+}
 .right-section {
-  flex-grow: 1;
-  display: flex;
   flex-direction: column;
+  padding: 2rem;
 }
 
 .main-content {
   flex-grow: 1;
   overflow-y: auto;
-  padding: 1rem;
 }
 </style>

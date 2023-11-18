@@ -23,8 +23,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .sidebar {
-  background-color: #fff;
-  width: 200px; // Или используйте проценты/вьюпорты для адаптивности
+  background-color: var(--vt-c-white);
+  width: 200px;
   padding: 1rem;
 
   ul {

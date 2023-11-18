@@ -4,6 +4,7 @@
       v-model="searchValue"
       clearable
       placeholder="Search..."
+      class="main-header__search-field"
     >
       <template #prepend>
         <img
@@ -13,7 +14,7 @@
       </template>
    </AppInput>
    <div class="main-header__profile-section">
-    <ProfileNotification badgeColor="red"/>
+     <ProfileNotification badgeColor="red"/>
      <ProfileAvatar avatarPath="src/assets/svg/profile-avatar.svg" />
    </div>
 
@@ -48,16 +49,20 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #f8f8;
   color: #fff;
-  padding: 1rem;
   text-align: center;
   width: 100%;
+
+  &__search-field {
+    max-width: 655px;
+  }
 
   &__profile-section {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 20px;
+    margin-left: 20px;
   }
 }
 </style>
