@@ -120,7 +120,7 @@ export default defineComponent({
   position: relative;
   background-color: #fff;
   border: 1px solid #ccc;
-  border-radius: 3px;
+  border-radius: 6px;
   transition: border-color 0.2s ease-in-out;
 
   &.is-focused {
@@ -133,7 +133,7 @@ export default defineComponent({
   height: 52px;
   padding: 0 12px;
   border: none;
-  border-radius: 3px;
+  border-radius: 6px;
   transition: padding-left 0.2s ease-in-out, padding-right 0.2s ease-in-out;
 
   &:focus {

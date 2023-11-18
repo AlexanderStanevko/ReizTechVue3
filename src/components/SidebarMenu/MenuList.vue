@@ -54,7 +54,7 @@ export default defineComponent({
   &__item {
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 10px 0;
     margin: 10px 0;
     border-radius: 4px;
     cursor: pointer;
