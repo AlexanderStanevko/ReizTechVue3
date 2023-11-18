@@ -1,12 +1,6 @@
 <template>
   <header class="main-header">
     <h1>Логотип</h1>
-    <AppInput
-      v-model="searchValue"
-      placeholder="Enter category"
-      label="search"
-      type="search"
-    />
 
     <AppInput
       v-model="searchValue"
