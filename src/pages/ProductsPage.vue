@@ -4,18 +4,21 @@
       v-model:titleValue="title"
       v-model:brandValue="brand"
     />
-    <!-- Здесь могут быть другие компоненты или контент -->
+    <ProductInformationTable />
+
   </main>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import ProductInformationHeader from 'components/Product/ProductInformationHeader.vue'
+import ProductInformationTable from 'components/Product/ProductInformationTable.vue'
 
 export default defineComponent({
   name: 'ProductsPage',
   components: {
     ProductInformationHeader,
+    ProductInformationTable,
   },
   setup() {
     const title = ref('')
