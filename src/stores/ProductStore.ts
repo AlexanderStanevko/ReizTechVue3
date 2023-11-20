@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import type { ProductItem } from 'types'
 import type { FetchAllProductsResponse } from 'types/response'
+import type { SearchProductsRequest } from 'types/request'
 import { handleAPIRequest } from 'utils'
 import type { Nullable } from 'utils'
 
@@ -31,19 +32,24 @@ export const useProductStore = defineStore({
       }
     },
 
-    async fetchExactProduct() {
-      const res = await handleAPIRequest<ProductItem[], unknown>({})
-
-      if (res.length) {
-        this.productList = res
-      }
-    },
-
-    async searchProducts() {
-      const res = await handleAPIRequest<ProductItem, unknown>({})
+    async fetchSingleProduct(productId: string) {
+      const res = await handleAPIRequest<ProductItem, unknown>({
+        controller: `products/${productId}`,
+      })
 
       if (res) {
         this.selectedProduct = res
+      }
+    },
+
+    async searchProducts(request: SearchProductsRequest) {
+      const res = await handleAPIRequest<FetchAllProductsResponse, SearchProductsRequest>({
+        controller: 'products/search',
+        params: { ...request },
+      })
+
+      if (res.products.length) {
+        this.productList = res.products
       }
     },
   },

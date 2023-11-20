@@ -1,7 +1,8 @@
 type FetchRequestArgs<RequestBodyType> = {
   controller?: string;
-  httpMethod?: string;
+  httpMethod?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   body?: RequestBodyType;
+  params?: Record<string, unknown>;
   baseURL?: string;
 }
 
@@ -11,17 +12,22 @@ export const handleAPIRequest = async <ResponseType, RequestBodyType>({
   controller = 'products',
   httpMethod = 'GET',
   body,
+  params,
   baseURL = 'https://dummyjson.com',
 }: FetchRequestArgs<RequestBodyType>): Promise<ExtendedResponse<ResponseType>> => {
   try {
-    const url = new URL(controller, baseURL)
+    const url = new URL(controller || '', baseURL)
+
+    if (params) {
+      Object.keys(params).forEach((key) => url.searchParams.append(key, String(params[key])))
+    }
 
     const fetchConfig: RequestInit = {
       method: httpMethod,
       headers: { 'Content-Type': 'application/json' },
     }
 
-    if (body) {
+    if (body && (httpMethod === 'POST' || httpMethod === 'PUT')) {
       fetchConfig.body = JSON.stringify(body)
     }
 
