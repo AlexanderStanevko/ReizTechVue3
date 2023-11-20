@@ -5,11 +5,18 @@
       v-model:brandValue="brand"
       class="products-page__header"
     />
+    <div class="products-page__content">
+      <AppSpinner
+        v-if="isLoading"
+        size="50px"
+        topColor="#D0D0D0"
+      />
     <ProductInformationTable
+      v-else
       :productList="productList"
       class="products-page__table"
     />
-
+    </div>
   </main>
 </template>
 
@@ -22,6 +29,7 @@ import {
 } from 'vue'
 import ProductInformationHeader from 'components/Product/ProductInformationHeader.vue'
 import ProductInformationTable from 'components/Product/ProductInformationTable.vue'
+import AppSpinner from 'components/App/AppSpinner.vue'
 import { useProductStore } from 'stores/ProductStore'
 import type { ProductItem } from 'types'
 import { useRoute } from 'vue-router'
@@ -31,6 +39,7 @@ export default defineComponent({
   components: {
     ProductInformationHeader,
     ProductInformationTable,
+    AppSpinner,
   },
   setup() {
     const route = useRoute()
@@ -65,6 +74,7 @@ export default defineComponent({
       title,
       brand,
       productList,
+      isLoading,
       fetchProducts,
     }
   },
@@ -75,6 +85,11 @@ export default defineComponent({
 .products-page {
   &__header {
     margin-bottom: 30px;
+  }
+  &__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
