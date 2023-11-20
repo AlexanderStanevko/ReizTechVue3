@@ -18,8 +18,8 @@ export const handleAPIRequest = async <ResponseType, RequestBodyType>({
   try {
     const url = new URL(controller || '', baseURL)
 
-    if (params) {
-      Object.keys(params).forEach((key) => url.searchParams.append(key, String(params[key])))
+    if (params?.q) {
+      url.searchParams.append('q', String(params.q))
     }
 
     const fetchConfig: RequestInit = {

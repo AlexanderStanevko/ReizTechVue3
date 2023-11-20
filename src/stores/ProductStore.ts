@@ -27,7 +27,7 @@ export const useProductStore = defineStore({
     async fetchAllProducts() {
       const res = await handleAPIRequest<FetchAllProductsResponse, unknown>({})
 
-      if (res.products.length) {
+      if (res.products) {
         this.productList = res.products
       }
     },
@@ -48,7 +48,7 @@ export const useProductStore = defineStore({
         params: { ...request },
       })
 
-      if (res.products.length) {
+      if (res.products) {
         this.productList = res.products
       }
     },

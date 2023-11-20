@@ -1,4 +1,3 @@
 export type SearchProductsRequest = {
-  title?: string;
-  brand: string;
+  q: string;
 }

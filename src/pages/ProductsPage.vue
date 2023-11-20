@@ -10,6 +10,7 @@
         v-if="isLoading"
         size="50px"
         topColor="#D0D0D0"
+        class="products-page__loading-section"
       />
     <ProductInformationTable
       v-else
@@ -25,12 +26,14 @@ import {
   computed,
   defineComponent,
   ref,
+  onMounted,
   watch,
 } from 'vue'
 import ProductInformationHeader from 'components/Product/ProductInformationHeader.vue'
 import ProductInformationTable from 'components/Product/ProductInformationTable.vue'
 import AppSpinner from 'components/App/AppSpinner.vue'
 import { useProductStore } from 'stores/ProductStore'
+import { customDebounce } from 'utils'
 import type { ProductItem } from 'types'
 import { useRoute } from 'vue-router'
 
@@ -42,40 +45,46 @@ export default defineComponent({
     AppSpinner,
   },
   setup() {
-    const route = useRoute()
-    const productStore = useProductStore()
-    const productList = computed<ProductItem[]>(() => productStore.productList)
-
     const title = ref('')
     const brand = ref('')
     const isLoading = ref(false)
+    const productStore = useProductStore()
 
     const fetchProducts = async () => {
+      isLoading.value = true
       try {
-        isLoading.value = true
-
         await productStore.fetchAllProducts()
       } catch (err) {
-        console.log(err)
+        console.error(err)
       } finally {
         isLoading.value = false
       }
     }
 
-    watch(
-      () => route.name,
-      async (val) => {
-        if (val === 'ProductsPage') await fetchProducts()
-      },
-      { immediate: true },
-    )
+    const searchProductsByTitleOrBrand = customDebounce(async () => {
+      isLoading.value = true
+      try {
+        await productStore.searchProducts({
+          q: `${title.value} ${brand.value}`.trim().toLowerCase(),
+        })
+      } catch (err) {
+        console.error(err)
+      } finally {
+        isLoading.value = false
+      }
+    }, 500) // Задержка debounce 500 мс
+
+    watch([title, brand], () => {
+      searchProductsByTitleOrBrand()
+    })
+
+    onMounted(fetchProducts)
 
     return {
       title,
       brand,
-      productList,
       isLoading,
-      fetchProducts,
+      productList: computed(() => productStore.productList),
     }
   },
 })
@@ -86,10 +95,18 @@ export default defineComponent({
   &__header {
     margin-bottom: 30px;
   }
+
   &__content {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  &__loading-section {
+    margin-top: 100px;
+  }
+  &__table {
+    width: 100%;
   }
 }
 </style>
