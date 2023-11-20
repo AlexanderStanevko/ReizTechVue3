@@ -45,9 +45,9 @@ export default defineComponent({
     transform: translateX(0);
   }
 
-  @media (max-width: 768px) { // Пример медиа-запроса для мобильных устройств
+  @media (max-width: 768px) {
     &__sidebar {
-      transform: translateX(-100%); // Скрытие боковой панели
+      transform: translateX(-100%);
     }
   }
 
@@ -65,7 +65,6 @@ export default defineComponent({
 
   &__view {
     flex-grow: 1;
-    // overflow-y: auto;
   }
 }
 </style>

@@ -20,7 +20,7 @@ export default defineComponent({
   props: {
     badgeColor: {
       type: String,
-      default: '#FFC107', // Default badge color
+      default: '#FFC107',
     },
   },
 })

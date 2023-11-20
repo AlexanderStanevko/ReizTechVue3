@@ -6,6 +6,7 @@
       row-key="id"
       selection="multiple"
       :sortableColumns="['title', 'category']"
+      v-model:selectedRows="selected"
     />
   </div>
 </template>
@@ -20,6 +21,7 @@ export default defineComponent({
     AppTable,
   },
   setup() {
+    const selected = ref([])
     const tableColumns = ref([
       { name: 'title', label: 'Title' },
       { name: 'category', label: 'Category' },
@@ -77,6 +79,7 @@ export default defineComponent({
     return {
       tableColumns,
       tableRows,
+      selected,
     }
   },
 })

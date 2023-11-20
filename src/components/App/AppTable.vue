@@ -8,9 +8,11 @@
               scope="col">
             <input type="checkbox"
                    v-if="selection === 'multiple'"
+                   v-model="areAllRowsSelected"
                    @change="toggleAllRowsSelection"
                    class="app-table__checkbox" />
           </th>
+
           <th v-for="column in propColumns"
               :key="column.name"
               class="app-table__cell app-table__cell--header"
@@ -18,31 +20,26 @@
               scope="col">
             {{ column.label }}
             <span v-if="sortableColumns.includes(column.name)">
-              {{
-                sortState.column === column.name
-                  ? (sortState.direction === 'asc'
-                  ? '↑' : '↓') : ''
-              }}
+              {{ sortState.column === column.name ? (sortState.direction === 'asc' ? '↑' : '↓') : '' }}
             </span>
           </th>
         </tr>
       </thead>
       <tbody class="app-table__body">
-        <template v-for="row in sortedRows"
-                  :key="row[propRowKey]">
-          <tr :class="['app-table__row', { 'app-table__row--selected': row.selected }]">
-            <td v-if="selection !== 'none'"
-                class="app-table__cell">
-              <input type="checkbox"
-                     v-model="row.selected"
-                     @change="() => emitRowSelection(row)"
-                     class="app-table__checkbox" />
-            </td>
-            <td v-for="column in propColumns"
-                :key="column.name"
-                class="app-table__cell">{{ row[column.name] }}</td>
-          </tr>
-        </template>
+        <tr v-for="row in sortedRows"
+            :key="row[propRowKey]"
+            :class="['app-table__row', { 'app-table__row--selected': row.selected }]">
+          <td v-if="selection !== 'none'"
+              class="app-table__cell">
+            <input type="checkbox"
+                   v-model="row.selected"
+                   @change="() => emitRowSelection(row)"
+                   class="app-table__checkbox" />
+          </td>
+          <td v-for="column in propColumns"
+              :key="column.name"
+              class="app-table__cell">{{ row[column.name] }}</td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -88,19 +85,27 @@ export default defineComponent({
       type: Array as PropType<string[]>,
       default: () => [],
     },
+    selectedRows: {
+      type: Array as PropType<TableRow[]>,
+      default: () => [],
+    },
   },
-  emits: ['update:selection'],
+  emits: ['update:selectedRows'],
   setup(props, { emit }) {
     const {
-      rows: propRows, columns: propColumns, rowKey: propRowKey, selection: propSelection,
+      rows: propRows,
+      columns: propColumns,
+      rowKey: propRowKey,
+      selection: propSelection,
     } = toRefs(props)
     const internalRows = ref<TableRow[]>([])
     const sortState = ref({ column: '', direction: 'asc' })
-
-    // Отслеживаем изменения в propRows
-    watch(propRows, (newRows) => {
-      internalRows.value = newRows.map((row) => ({ ...row, selected: !!row.selected }))
-    }, { immediate: true })
+    const areAllRowsSelected = computed({
+      get: () => internalRows.value.every((row) => row.selected),
+      set: (value) => {
+        internalRows.value = internalRows.value.map((row) => ({ ...row, selected: value }))
+      },
+    })
 
     const sortedRows = computed(() => {
       if (!sortState.value.column) {
@@ -126,13 +131,22 @@ export default defineComponent({
       }
     }
 
-    const toggleAllRowsSelection = (event: Event) => {
-      const isSelected = (event.target as HTMLInputElement).checked
+    const toggleAllRowsSelection = () => {
       internalRows.value = internalRows.value.map((row) => ({
         ...row,
-        selected: isSelected,
+        selected: areAllRowsSelected.value,
       }))
-      emit('update:selection', internalRows.value.filter((r) => r.selected))
+      emit('update:selectedRows', internalRows.value)
+    }
+
+    const updateMainCheckboxState = () => {
+      const areAllSelected = internalRows.value.every((row) => row.selected)
+      const areSomeSelected = internalRows.value.some((row) => row.selected)
+      areAllRowsSelected.value = areAllSelected
+      const mainCheckbox = document.querySelector('.app-table__checkbox')
+      if (mainCheckbox) {
+        (mainCheckbox as HTMLInputElement).indeterminate = areSomeSelected && !areAllSelected
+      }
     }
 
     const emitRowSelection = (selectedRow: TableRow) => {
@@ -145,9 +159,18 @@ export default defineComponent({
         internalRows.value = internalRows.value.map((row) => (
           row.id === selectedRow.id ? { ...row, selected: !row.selected } : row
         ))
+        updateMainCheckboxState()
       }
-      emit('update:selection', internalRows.value.filter((row) => row.selected))
+      emit('update:selectedRows', internalRows.value.filter((r) => r.selected))
     }
+
+    watch(
+      () => propRows.value,
+      (newRows) => {
+        internalRows.value = newRows.map((row) => ({ ...row, selected: !!row.selected }))
+      },
+      { immediate: true },
+    )
 
     return {
       propColumns,
@@ -156,6 +179,7 @@ export default defineComponent({
       internalRows,
       sortedRows,
       sortState,
+      areAllRowsSelected,
       toggleAllRowsSelection,
       emitRowSelection,
       toggleSort,
