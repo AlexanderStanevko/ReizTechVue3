@@ -14,11 +14,21 @@
           <th v-for="column in propColumns"
               :key="column.name"
               class="app-table__cell app-table__cell--header"
-              scope="col">{{ column.label }}</th>
+              @click="sortableColumns.includes(column.name) && toggleSort(column.name)"
+              scope="col">
+            {{ column.label }}
+            <span v-if="sortableColumns.includes(column.name)">
+              {{
+                sortState.column === column.name
+                  ? (sortState.direction === 'asc'
+                  ? '↑' : '↓') : ''
+              }}
+            </span>
+          </th>
         </tr>
       </thead>
       <tbody class="app-table__body">
-        <template v-for="row in internalRows"
+        <template v-for="row in sortedRows"
                   :key="row[propRowKey]">
           <tr :class="['app-table__row', { 'app-table__row--selected': row.selected }]">
             <td v-if="selection !== 'none'"
@@ -40,9 +50,9 @@
 
 <script lang="ts">
 import {
-  defineComponent, ref, watch, toRefs,
+  defineComponent, ref, computed, watch, toRefs,
 } from 'vue'
-import type { Ref, PropType } from 'vue'
+import type { PropType } from 'vue'
 
 interface TableColumn {
   name: string;
@@ -74,21 +84,47 @@ export default defineComponent({
       type: String as PropType<'none' | 'single' | 'multiple'>,
       default: 'none',
     },
+    sortableColumns: {
+      type: Array as PropType<string[]>,
+      default: () => [],
+    },
   },
   emits: ['update:selection'],
   setup(props, { emit }) {
-    const internalRows: Ref<TableRow[]> = ref([])
     const {
-      rows: propRows,
-      columns: propColumns,
-      rowKey: propRowKey,
-      selection: propSelection,
+      rows: propRows, columns: propColumns, rowKey: propRowKey, selection: propSelection,
     } = toRefs(props)
+    const internalRows = ref<TableRow[]>([])
+    const sortState = ref({ column: '', direction: 'asc' })
 
-    // Initialize internalRows with the propRows' values
+    // Отслеживаем изменения в propRows
     watch(propRows, (newRows) => {
       internalRows.value = newRows.map((row) => ({ ...row, selected: !!row.selected }))
     }, { immediate: true })
+
+    const sortedRows = computed(() => {
+      if (!sortState.value.column) {
+        return internalRows.value
+      }
+      return [...internalRows.value].sort((a, b) => {
+        if (a[sortState.value.column] < b[sortState.value.column]) {
+          return sortState.value.direction === 'asc' ? -1 : 1
+        }
+        if (a[sortState.value.column] > b[sortState.value.column]) {
+          return sortState.value.direction === 'asc' ? 1 : -1
+        }
+        return 0
+      })
+    })
+
+    const toggleSort = (column: string) => {
+      if (sortState.value.column === column) {
+        sortState.value.direction = sortState.value.direction === 'asc' ? 'desc' : 'asc'
+      } else {
+        sortState.value.column = column
+        sortState.value.direction = 'asc'
+      }
+    }
 
     const toggleAllRowsSelection = (event: Event) => {
       const isSelected = (event.target as HTMLInputElement).checked
@@ -100,28 +136,17 @@ export default defineComponent({
     }
 
     const emitRowSelection = (selectedRow: TableRow) => {
-      let newRows: TableRow[]
-
       if (propSelection.value === 'single') {
-        // Unselect all rows and then select the clicked row
-        newRows = internalRows.value.map((row) => ({
+        internalRows.value = internalRows.value.map((row) => ({
           ...row,
           selected: row.id === selectedRow.id,
         }))
       } else {
-        // Toggle the selection state of the clicked row
-        newRows = internalRows.value.map((row) => (
-          row.id === selectedRow.id
-            ? { ...row, selected: !row.selected }
-            : row
+        internalRows.value = internalRows.value.map((row) => (
+          row.id === selectedRow.id ? { ...row, selected: !row.selected } : row
         ))
       }
-
-      // Update internalRows with newRows
-      internalRows.value = newRows
-
-      // Emit the event with the new selection state
-      emit('update:selection', newRows.filter((row) => row.selected))
+      emit('update:selection', internalRows.value.filter((row) => row.selected))
     }
 
     return {
@@ -129,8 +154,11 @@ export default defineComponent({
       propRowKey,
       propSelection,
       internalRows,
+      sortedRows,
+      sortState,
       toggleAllRowsSelection,
       emitRowSelection,
+      toggleSort,
     }
   },
 })
@@ -147,11 +175,11 @@ export default defineComponent({
   }
 
   &__header, &__body {
-    // Стили для заголовка и тела таблицы
+
   }
 
   &__row {
-    transition: background-color 0.3s ease; // Добавляем анимацию для фона строки
+    transition: background-color 0.3s ease;
 
     &:hover {
       background-color: #f5f5f5;
@@ -167,6 +195,7 @@ export default defineComponent({
     border-bottom: 1px solid #e0e0e0;
 
     &--header {
+      cursor: pointer;
       background-color: white;
       font-weight: bold;
     }
@@ -199,4 +228,3 @@ export default defineComponent({
   }
 }
 </style>
-
