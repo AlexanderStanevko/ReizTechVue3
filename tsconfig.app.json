@@ -42,8 +42,8 @@
       "stores/*": [
         "src/stores/*"
       ],
-      "utils/*": [
-        "src/utils/*"
+      "utils": [
+        "src/utils/index.ts"
       ],
       "hooks/*": [
         "src/hooks/*"

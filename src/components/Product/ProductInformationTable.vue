@@ -2,7 +2,7 @@
   <div>
     <AppTable
       :columns="tableColumns"
-      :rows="tableRows"
+      :rows="productList"
       row-key="id"
       selection="multiple"
       :sortableColumns="['title', 'category']"
@@ -12,13 +12,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, type PropType } from 'vue'
 import AppTable from 'components/App/AppTable.vue'
+import type { ProductItem } from 'types'
 
 export default defineComponent({
   name: 'ProductInformationTable',
   components: {
     AppTable,
+  },
+  props: {
+    productList: {
+      type: Array as PropType<ProductItem[]>,
+    },
   },
   setup() {
     const selected = ref([])
