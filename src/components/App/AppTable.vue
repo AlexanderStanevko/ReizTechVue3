@@ -1,30 +1,36 @@
 <template>
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
+  <div class="app-table">
+    <table class="app-table__table">
+      <thead class="app-table__header">
+        <tr class="app-table__row">
           <th v-if="selection !== 'none'"
-scope="col">
+              class="app-table__cell app-table__cell--header"
+              scope="col">
             <input type="checkbox"
-v-if="selection === 'multiple'"
-@change="toggleAllRowsSelection" />
+                   v-if="selection === 'multiple'"
+                   @change="toggleAllRowsSelection"
+                   class="app-table__checkbox" />
           </th>
           <th v-for="column in propColumns"
-:key="column.name"
-scope="col">{{ column.label }}</th>
+              :key="column.name"
+              class="app-table__cell app-table__cell--header"
+              scope="col">{{ column.label }}</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="app-table__body">
         <template v-for="row in internalRows"
-:key="row[propRowKey]">
-          <tr :class="{ 'is-selected': row.selected }">
-            <td v-if="selection !== 'none'">
+                  :key="row[propRowKey]">
+          <tr :class="['app-table__row', { 'app-table__row--selected': row.selected }]">
+            <td v-if="selection !== 'none'"
+                class="app-table__cell">
               <input type="checkbox"
-v-model="row.selected"
-@change="() => emitRowSelection(row)" />
+                     v-model="row.selected"
+                     @change="() => emitRowSelection(row)"
+                     class="app-table__checkbox" />
             </td>
             <td v-for="column in propColumns"
-:key="column.name">{{ row[column.name] }}</td>
+                :key="column.name"
+                class="app-table__cell">{{ row[column.name] }}</td>
           </tr>
         </template>
       </tbody>
@@ -130,54 +136,56 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-.table-container {
-  width: 100%;
-  overflow-x: auto;
+<style lang="scss" scoped>
+.app-table {
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &__header, &__body {
+    // Стили для заголовка и тела таблицы
+  }
+
+  &__row {
+    transition: background-color 0.3s ease; // Добавляем анимацию для фона строки
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+
+    &--selected, &--selected:hover {
+      background-color: #eeeff3;
+    }
+  }
+
+  &__cell {
+    padding: 16px;
+    border-bottom: 1px solid #e0e0e0;
+
+    &--header {
+      background-color: white;
+      font-weight: bold;
+    }
+  }
+
+  &__checkbox {
+    cursor: pointer;
+  }
+
+  &__cell:first-child, &__cell:last-child {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  background-color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-th, td {
-  padding: 16px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-th {
-  background-color: white;
-  font-weight: bold;
-}
-
-tr:hover {
-  background-color: #f5f5f5;
-}
-
-tr.is-selected, tr.is-selected:hover {
-  background-color: #e8eaf6;
-}
-
-input[type="checkbox"] {
-  /* Стилизация чекбоксов, если требуется */
-}
-
-/* Дополнительные стили для заголовка и ячеек */
-th:first-child, td:first-child {
-  padding-left: 24px;
-}
-
-th:last-child, td:last-child {
-  padding-right: 24px;
-}
-
-/* Стили для скроллбара, если таблица прокручивается */
+// Стили для скроллбара
 ::-webkit-scrollbar {
   height: 4px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -186,9 +194,9 @@ th:last-child, td:last-child {
 
 ::-webkit-scrollbar-thumb {
   background: #888;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  &:hover {
+    background: #555;
+  }
 }
 </style>
+

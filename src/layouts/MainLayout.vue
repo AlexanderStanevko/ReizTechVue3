@@ -56,6 +56,7 @@ export default defineComponent({
     flex-direction: column;
     flex-grow: 1;
     padding: 2rem;
+    overflow-y: auto;
   }
 
   &__header {
@@ -64,7 +65,7 @@ export default defineComponent({
 
   &__view {
     flex-grow: 1;
-    overflow-y: auto;
+    // overflow-y: auto;
   }
 }
 </style>

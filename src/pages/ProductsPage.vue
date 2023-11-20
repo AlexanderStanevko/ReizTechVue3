@@ -3,8 +3,9 @@
     <ProductInformationHeader
       v-model:titleValue="title"
       v-model:brandValue="brand"
+      class="products-page__header"
     />
-    <ProductInformationTable />
+    <ProductInformationTable class="products-page__table"/>
 
   </main>
 </template>
@@ -34,6 +35,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .products-page {
-  /* Ваши стили для страницы продуктов */
+  &__header {
+    margin-bottom: 30px;
+  }
 }
 </style>

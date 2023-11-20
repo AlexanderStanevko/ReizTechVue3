@@ -59,6 +59,18 @@ export default defineComponent({
       {
         id: 10, title: 'iPhone 9', category: 'smartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
       },
+      {
+        id: 11, title: 'iPhone 9', category: 'smartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
+      },
+      {
+        id: 12, title: 'iPhone 9', category: 'smartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
+      },
+      {
+        id: 13, title: 'iPhone 9', category: 'smartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
+      },
+      {
+        id: 14, title: 'iPhone 9', category: 'smartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
+      },
     ])
 
     return {

@@ -1,0 +1,20 @@
+// Стили для скроллбара
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--vt-c-white-mute);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--vt-c-text-dark-3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var( --vt-c-divider-dark-3);
+}
