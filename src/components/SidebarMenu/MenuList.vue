@@ -5,6 +5,9 @@
         v-for="item in menuItems"
         :key="item.title"
         class="menu-list__item"
+        :class="{
+          'menu-list__item--help': item.bottomPosition
+        }"
       >
         <MenuListItem
           :item="item"
@@ -47,6 +50,9 @@ export default defineComponent({
       {
         title: 'Settings', icon: 'setting-2.svg', link: '/dashboard',
       },
+      {
+        title: 'Help', icon: 'question.svg', link: '/dashboard', bottomPosition: true,
+      },
     ])
 
     const onSelectItem = (selectedTitle: string) => {
@@ -68,11 +74,15 @@ export default defineComponent({
 .menu-list {
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   &__items {
+    display: flex;
+    flex-direction: column;
     list-style: none;
     padding: 0;
     margin: 0;
+    height: 100%;
   }
 
   &__item {
@@ -87,6 +97,11 @@ export default defineComponent({
     &:hover {
       color: var(--vt-c-text-dark-2);
       background-color: var(--vt-c-text-dark-2);
+    }
+
+    &--help {
+      margin-top: auto;
+      margin-bottom: 0;
     }
   }
 }

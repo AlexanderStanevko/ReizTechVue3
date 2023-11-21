@@ -35,7 +35,6 @@ import AppSpinner from 'components/App/AppSpinner.vue'
 import { useProductStore } from 'stores/ProductStore'
 import { customDebounce } from 'utils'
 import type { ProductItem } from 'types'
-import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'ProductsPage',
@@ -49,6 +48,9 @@ export default defineComponent({
     const brand = ref('')
     const isLoading = ref(false)
     const productStore = useProductStore()
+    const productList = computed<ProductItem[]>(() => productStore.productList)
+
+    const searchQuery = computed(() => `${title?.value || brand?.value || ''}`.trim().toLowerCase())
 
     const fetchProducts = async () => {
       isLoading.value = true
@@ -64,15 +66,17 @@ export default defineComponent({
     const searchProductsByTitleOrBrand = customDebounce(async () => {
       isLoading.value = true
       try {
+        const searchParam = `${title.value || brand.value}`.trim().toLowerCase()
+
         await productStore.searchProducts({
-          q: `${title.value} ${brand.value}`.trim().toLowerCase(),
+          q: searchParam,
         })
       } catch (err) {
         console.error(err)
       } finally {
         isLoading.value = false
       }
-    }, 500) // Задержка debounce 500 мс
+    }, 500)
 
     watch([title, brand], () => {
       searchProductsByTitleOrBrand()
@@ -84,7 +88,7 @@ export default defineComponent({
       title,
       brand,
       isLoading,
-      productList: computed(() => productStore.productList),
+      productList,
     }
   },
 })
