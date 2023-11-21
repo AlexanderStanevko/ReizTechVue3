@@ -262,7 +262,7 @@ export default defineComponent({
         ...row,
         selected: areAllRowsSelected.value,
       }))
-      emit('update:selectedRows', internalRows.value)
+      emit('update:selectedRows', internalRows.value.filter((r) => r.selected))
     }
 
     const updateMainCheckboxState = () => {
@@ -298,6 +298,17 @@ export default defineComponent({
       { immediate: true },
     )
 
+    watch(
+      () => props.selectedRows,
+      (newSelectedRows) => {
+        internalRows.value = internalRows.value.map((row) => {
+          const isSelected = newSelectedRows.some((selectedRow) => selectedRow.id === row.id)
+          return { ...row, selected: isSelected }
+        })
+      },
+      { immediate: true },
+    )
+
     return {
       propColumns,
       propRowKey,
@@ -309,6 +320,7 @@ export default defineComponent({
       toggleAllRowsSelection,
       emitRowSelection,
       toggleSort,
+      // updateSelection,
     }
   },
 })

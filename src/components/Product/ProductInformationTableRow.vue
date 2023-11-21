@@ -37,14 +37,11 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ['update:selected'],
+  emits: ['selectionChanged'],
   setup(props, { emit }) {
     const onCheckboxChange = (event: Event) => {
-      emit('update:selected', { ...props.row, selected: (event.target as HTMLInputElement).checked })
+      emit('selectionChanged', { ...props.row, selected: (event.target as HTMLInputElement).checked })
     }
-    // const emitRowSelectionChanged = () => {
-    //   emit('rowSelectionChanged', props.row)
-    // }
 
     return {
       onCheckboxChange,

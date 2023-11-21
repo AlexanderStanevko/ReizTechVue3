@@ -1,18 +1,10 @@
 <template>
   <div>
-    <!-- <AppTable
-      :columns="tableColumns"
-      :rows="productList"
-      row-key="id"
-      selection="multiple"
-      :sortableColumns="['title', 'category']"
-      v-model:selectedRows="selected"
-    /> -->
     <AppTable
       :columns="tableColumns"
       :rows="productList"
       row-key="id"
-      selection="multiple"
+      selection="single"
       :sortableColumns="['title', 'category']"
       v-model:selectedRows="selected"
     >
@@ -54,14 +46,15 @@ export default defineComponent({
       { name: 'rating', label: 'Rating' },
     ])
 
-    const handleRowSelectionChanged = (updatedRow: ProductItem & { selected: boolean}) => {
-      if (updatedRow.selected) {
-        selected.value.push(updatedRow)
-      } else {
-        const index = selected.value.findIndex((item) => item.id === updatedRow.id)
-        if (index !== -1) {
-          selected.value.splice(index, 1)
-        }
+    const handleRowSelectionChanged = (updatedRow: ProductItem & { selected: boolean }) => {
+      const existingIndex = selected.value.findIndex((item) => item.id === updatedRow.id)
+      if (updatedRow.selected && existingIndex === -1) {
+        selected.value = [...selected.value, updatedRow]
+      } else if (!updatedRow.selected && existingIndex !== -1) {
+        selected.value = [
+          ...selected.value.slice(0, existingIndex),
+          ...selected.value.slice(existingIndex + 1),
+        ]
       }
     }
 
