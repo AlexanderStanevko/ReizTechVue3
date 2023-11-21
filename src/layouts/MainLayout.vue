@@ -1,11 +1,21 @@
 <template>
   <div class="layout">
+    <div
+      v-if="isMobile"
+      :class="{'layout__overlay--visible': isSidebarVisible}"
+      class="layout__overlay"
+      @click="onToggleSidebar"
+    ></div>
     <MainSidebar
-      v-if="isDesktop"
+      :isSidebarVisible="isSidebarVisible"
       class="layout__sidebar"
+      :class="{'layout__sidebar--visible': isSidebarVisible && isMobile}"
     />
     <div class="layout__content">
-      <MainHeader class="layout__header"/>
+      <MainHeader
+        class="layout__header"
+        @toggleSidebar="onToggleSidebar"
+      />
       <main class="layout__view">
         <RouterView />
       </main>
@@ -14,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import MainHeader from 'components/main/MainHeader.vue'
 import MainSidebar from 'components/main/MainSidebar.vue'
 import { responsive } from 'utils'
@@ -26,8 +36,16 @@ export default defineComponent({
     MainSidebar,
   },
   setup() {
+    const isSidebarVisible = ref(false)
+
+    const onToggleSidebar = () => {
+      isSidebarVisible.value = !isSidebarVisible.value
+    }
+
     return {
       ...responsive,
+      isSidebarVisible,
+      onToggleSidebar,
     }
   },
 })
@@ -39,11 +57,38 @@ export default defineComponent({
   background-color: var(--vt-c-white-soft);
   flex-grow: 1;
 
-  &__sidebar {
-    transition: transform 0.9s ease-in-out;
-    transform: translateX(0);
-    overflow-y: auto;
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+
+    &--visible {
+      opacity: 1;
+    }
   }
+
+  &__sidebar {
+    overflow-y: auto;
+
+    @media (max-width: 1023px) {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: -100%;
+      z-index: 100;
+      transition: left 0.7s ease;
+
+      &--visible {
+        left: 0;
+      }
+    }
+}
 
   &__content {
     display: flex;

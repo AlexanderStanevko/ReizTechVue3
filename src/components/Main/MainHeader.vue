@@ -3,6 +3,7 @@
     <div
       v-if="isMobile"
       class="main-header__mobile-menu"
+      @click="toggleSidebar"
     >
     <img
       src="src/assets/svg/menu-hamburger.svg"
@@ -44,12 +45,23 @@ export default defineComponent({
     ProfileAvatar,
     ProfileNotification,
   },
-  setup() {
+  props: {
+    modelValue: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ['toggleSidebar'],
+  setup(props, { emit }) {
     const searchValue = ref('')
+    const toggleSidebar = () => {
+      emit('toggleSidebar')
+    }
 
     return {
-      searchValue,
       ...responsive,
+      searchValue,
+      toggleSidebar,
     }
   },
 })
