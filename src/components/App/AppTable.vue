@@ -40,6 +40,23 @@
               :key="column.name"
               class="app-table__cell">{{ row[column.name] }}</td>
         </tr>
+        <tr
+          v-if="sortedRows.length === 0"
+          class="app-table__row app-table__row--nodata"
+        >
+          <td :colspan="propColumns.length + (selection !== 'none' ? 1 : 0)">
+            <slot name="nodata">
+              <div class="app-table__nodata-content">
+                <img
+                  src="src/assets/svg/attention-svgrepo-com.svg"
+                  alt="Attention"
+                  class="app-table__nodata-image"
+                />
+                There is nothing to display
+              </div>
+            </slot>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -212,6 +229,20 @@ export default defineComponent({
     &--selected, &--selected:hover {
       background-color: #eeeff3;
     }
+
+    &--nodata {
+      text-align: center;
+      color: #757575;
+      font-style: italic;
+    }
+  }
+
+  &__nodata-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 
   &__cell {

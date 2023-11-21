@@ -43,6 +43,7 @@ export default defineComponent({
   &__sidebar {
     transition: transform 0.9s ease-in-out;
     transform: translateX(0);
+    overflow-y: auto;
   }
 
   @media (max-width: 768px) {
