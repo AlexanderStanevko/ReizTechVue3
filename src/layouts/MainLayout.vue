@@ -17,7 +17,7 @@
 import { defineComponent } from 'vue'
 import MainHeader from 'components/main/MainHeader.vue'
 import MainSidebar from 'components/main/MainSidebar.vue'
-import responsive from 'utils/responsive'
+import { responsive } from 'utils'
 
 export default defineComponent({
   name: 'MainLayout',

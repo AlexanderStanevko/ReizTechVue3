@@ -35,7 +35,7 @@ import { defineComponent, ref } from 'vue'
 import AppInput from 'components/App/AppInput.vue'
 import ProfileNotification from 'components/Profile/ProfileNotification.vue'
 import ProfileAvatar from 'components/Profile/ProfileAvatar.vue'
-import responsive from 'utils/responsive'
+import { responsive } from 'utils'
 
 export default defineComponent({
   name: 'MainHeader',

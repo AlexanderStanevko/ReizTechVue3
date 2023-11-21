@@ -73,8 +73,8 @@ export default defineComponent({
   &__fields {
     display: flex;
     gap: 1rem;
-    width: 50%;
-
+    // width: 50%;
+    width: 100%;
     &__input {
       flex: 1;
     }

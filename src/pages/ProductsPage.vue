@@ -12,11 +12,18 @@
         topColor="#D0D0D0"
         class="products-page__loading-section"
       />
-      <ProductInformationTable
-        v-else
-        :productList="productList"
-        class="products-page__table"
-      />
+      <template v-else>
+        <ProductInformationDocumentList
+          v-if="isMobile"
+          :products="productList"
+        />
+        <ProductInformationTable
+          v-else
+          :productList="productList"
+          class="products-page__table"
+        />
+      </template>
+
     </div>
   </main>
 </template>
@@ -31,9 +38,10 @@ import {
 } from 'vue'
 import ProductInformationHeader from 'components/Product/ProductInformationHeader.vue'
 import ProductInformationTable from 'components/Product/ProductInformationTable.vue'
+import ProductInformationDocumentList from 'components/Product/ProductInformationDocumentList.vue'
 import AppSpinner from 'components/App/AppSpinner.vue'
 import { useProductStore } from 'stores/ProductStore'
-import { customDebounce } from 'utils'
+import { customDebounce, responsive } from 'utils'
 import type { ProductItem } from 'types'
 
 export default defineComponent({
@@ -42,6 +50,7 @@ export default defineComponent({
     ProductInformationHeader,
     ProductInformationTable,
     AppSpinner,
+    ProductInformationDocumentList,
   },
   setup() {
     const title = ref('')
@@ -106,6 +115,7 @@ export default defineComponent({
     })
 
     return {
+      ...responsive,
       title,
       brand,
       isLoading,
