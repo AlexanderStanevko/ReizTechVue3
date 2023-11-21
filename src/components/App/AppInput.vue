@@ -20,6 +20,10 @@
         class="field"
         :id="uuid"
         :placeholder="placeholder"
+        v-bind="{
+          ...$attrs,
+        }"
+        :disabled="disable"
         @focus="isFocused = true"
         @blur="isFocused = false"
       />
@@ -69,6 +73,10 @@ export default defineComponent({
       default: '',
     },
     clearable: {
+      type: Boolean,
+      default: false,
+    },
+    disable: {
       type: Boolean,
       default: false,
     },
@@ -139,6 +147,12 @@ export default defineComponent({
   &:focus {
     outline: none;
     border-color: #007bff;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: #e9ecef;
+    color: #6c757d;
   }
 }
 

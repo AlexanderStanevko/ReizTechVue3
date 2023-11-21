@@ -3,6 +3,7 @@
     <ProductInformationHeader
       v-model:titleValue="title"
       v-model:brandValue="brand"
+      :isLoading="isLoading"
       class="products-page__header"
     />
     <div class="products-page__content">

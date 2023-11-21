@@ -5,6 +5,7 @@
       <AppInput
         v-model="titleValueLocal"
         clearable
+        :disable="isLoading"
         label="Title"
         placeholder="Enter Title"
         class="product-information-header__input"
@@ -19,6 +20,7 @@
       <AppInput
         v-model="brandValueLocal"
         clearable
+        :disable="isLoading"
         label="Brand"
         placeholder="Enter Brand"
         class="product-information-header__input"
@@ -51,6 +53,10 @@ export default defineComponent({
     brandValue: {
       type: String,
       default: '',
+    },
+    isLoading: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['update:titleValue', 'update:brandValue'],

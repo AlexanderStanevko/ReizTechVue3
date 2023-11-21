@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <div
-      v-if="isMobile"
+      v-if="isMobile && isSidebarVisible"
       :class="{'layout__overlay--visible': isSidebarVisible}"
       class="layout__overlay"
       @click="onToggleSidebar"
