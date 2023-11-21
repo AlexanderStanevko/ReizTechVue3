@@ -12,11 +12,11 @@
         topColor="#D0D0D0"
         class="products-page__loading-section"
       />
-    <ProductInformationTable
-      v-else
-      :productList="productList"
-      class="products-page__table"
-    />
+      <ProductInformationTable
+        v-else
+        :productList="productList"
+        class="products-page__table"
+      />
     </div>
   </main>
 </template>
@@ -50,8 +50,6 @@ export default defineComponent({
     const productStore = useProductStore()
     const productList = computed<ProductItem[]>(() => productStore.productList)
 
-    const searchQuery = computed(() => `${title?.value || brand?.value || ''}`.trim().toLowerCase())
-
     const fetchProducts = async () => {
       isLoading.value = true
       try {
@@ -63,13 +61,13 @@ export default defineComponent({
       }
     }
 
-    const searchProductsByTitleOrBrand = customDebounce(async () => {
+    const searchProductsByTitleOrBrand = customDebounce(async (query: string) => {
       isLoading.value = true
       try {
-        const searchParam = `${title.value || brand.value}`.trim().toLowerCase()
+        const q = query.toLowerCase().trim()
 
         await productStore.searchProducts({
-          q: searchParam,
+          q,
         })
       } catch (err) {
         console.error(err)
@@ -78,11 +76,34 @@ export default defineComponent({
       }
     }, 500)
 
-    watch([title, brand], () => {
-      searchProductsByTitleOrBrand()
-    })
+    watch(
+      [
+        () => title.value,
+        () => brand.value,
+      ],
+      async ([
+        tValue,
+        bValue,
+      ]) => {
+        if (!tValue && !bValue) {
+          await fetchProducts()
+          return
+        }
+        // So, the dummyJSON service provides poor search capabilities.
+        // I can search only by one query string.
+        // If I need to, say, search by brand, I pass brand as a parameter.
+        // If I need a title, I pass the title as a parameter
+        // If the user enters both parameters, the service will return nothing.
+        // In this case, I will send a search query with the title parameter every time
+        // (if both parameters are entered)
+        // Since I don't want to disable one of the input fields for the user during the process
+        if (tValue.length >= 3 || bValue.length >= 3) searchProductsByTitleOrBrand(tValue, bValue)
+      },
+    )
 
-    onMounted(fetchProducts)
+    onMounted(async () => {
+      await fetchProducts()
+    })
 
     return {
       title,
