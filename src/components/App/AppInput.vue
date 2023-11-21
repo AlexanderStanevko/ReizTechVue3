@@ -22,7 +22,6 @@
         :placeholder="placeholder"
         @focus="isFocused = true"
         @blur="isFocused = false"
-        :style="{ 'padding-left': computePaddingLeft, 'padding-right': computePaddingRight }"
       />
       <div
         v-if="clearable && modelValueLocal"
@@ -132,7 +131,7 @@ export default defineComponent({
 .field {
   flex-grow: 1;
   height: 52px;
-  padding: 0 12px;
+  padding: 0 36px;
   border: none;
   border-radius: 6px;
   transition: padding-left 0.2s ease-in-out, padding-right 0.2s ease-in-out;
@@ -145,6 +144,7 @@ export default defineComponent({
 
 .prepend-icon, .clear-icon {
   display: flex;
+  // width: 24px;
   align-items: center;
   position: absolute;
   height: 100%;
@@ -157,8 +157,7 @@ export default defineComponent({
 }
 
 .clear-icon {
-  right: 0;
-  padding: 0 12px;
+  right: 3px;
   opacity: 0;
   cursor: pointer;
 

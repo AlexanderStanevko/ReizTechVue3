@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 
-const mobileMaxWidth = 1023
+const mobileMaxWidth = 1024
 const isMobile = ref(false)
 const isDesktop = ref(false)
 

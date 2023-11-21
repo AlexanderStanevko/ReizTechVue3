@@ -7,68 +7,68 @@
       class="mobile-card__section"
     >
       <div class="flex-row justify-between">
-        <div>
-        <div class="full-width mb-20">
-          <div class="mobile-card__label">
-            Title
+        <div class="full-width">
+          <div class="full-width mb-20">
+            <div class="mobile-card__label">
+              Title
+            </div>
+
+            <div class="mobile-card__value">
+              {{ item.title }}
+            </div>
           </div>
 
-          <div class="mobile-card__value">
-            {{ item.title }}
+          <div class="full-width mb-20">
+            <div class="mobile-card__label">
+              Category
+            </div>
+
+            <div class="mobile-card__value">
+              {{ item.category }}
+            </div>
+          </div>
+
+          <div class="full-width mb-20">
+            <div class="mobile-card__label">
+              Brand
+            </div>
+
+            <div class="mobile-card__value">
+              {{ item.brand }}
+            </div>
           </div>
         </div>
+        <div class="full-width">
+          <div class="full-width mb-20">
+            <div class="mobile-card__label">
+              Price
+            </div>
 
-        <div class="full-width mb-20">
-          <div class="mobile-card__label">
-            Category
+            <div class="mobile-card__value">
+              {{ item.price }}
+            </div>
           </div>
 
-          <div class="mobile-card__value">
-            {{ item.category }}
+          <div class="full-width mb-20">
+            <div class="mobile-card__label">
+              Stock
+            </div>
+
+            <div class="mobile-card__value">
+              {{ item.stock }}
+            </div>
+          </div>
+
+          <div class="full-width mb-20">
+            <div class="mobile-card__label">
+              Rating
+            </div>
+
+            <div class="mobile-card__value">
+              {{ item.rating }}
+            </div>
           </div>
         </div>
-
-        <div class="full-width mb-20">
-          <div class="mobile-card__label">
-            Brand
-          </div>
-
-          <div class="mobile-card__value">
-            {{ item.brand }}
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="full-width mb-20">
-          <div class="mobile-card__label">
-            Price
-          </div>
-
-          <div class="mobile-card__value">
-            {{ item.price }}
-          </div>
-        </div>
-
-        <div class="full-width mb-20">
-          <div class="mobile-card__label">
-            Stock
-          </div>
-
-          <div class="mobile-card__value">
-            {{ item.stock }}
-          </div>
-        </div>
-
-        <div class="full-width mb-20">
-          <div class="mobile-card__label">
-            Rating
-          </div>
-
-          <div class="mobile-card__value">
-            {{ item.rating }}
-          </div>
-        </div>
-      </div>
       </div>
     </section>
   </div>

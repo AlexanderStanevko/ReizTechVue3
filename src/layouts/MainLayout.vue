@@ -36,7 +36,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .layout {
   display: flex;
-  height: 100vh;
   background-color: var(--vt-c-white-soft);
   flex-grow: 1;
 
@@ -44,12 +43,6 @@ export default defineComponent({
     transition: transform 0.9s ease-in-out;
     transform: translateX(0);
     overflow-y: auto;
-  }
-
-  @media (max-width: 768px) {
-    &__sidebar {
-      transform: translateX(-100%);
-    }
   }
 
   &__content {
@@ -66,6 +59,24 @@ export default defineComponent({
 
   &__view {
     flex-grow: 1;
+  }
+}
+
+.layout__content::-webkit-scrollbar,
+.layout__sidebar::-webkit-scrollbar
+{
+    display: none;
+}
+
+.layout__content,
+.layout__sidebar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    height: 100vh;
   }
 }
 </style>

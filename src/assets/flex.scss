@@ -47,3 +47,25 @@
     align-items: start;
   }
 }
+
+.gap {
+  &-10 {
+    gap: 10px
+  }
+
+  &-15{
+    gap: 15px
+  }
+
+  &-20 {
+    gap: 20px
+  }
+
+  &-25 {
+    gap: 125px
+  }
+
+  &-30 {
+    gap: 30px
+  }
+}

@@ -8,14 +8,28 @@
         label="Title"
         placeholder="Enter Title"
         class="product-information-header__input"
-      />
+      >
+        <template #prepend>
+          <img
+            src="src/assets/svg/search-normal.svg"
+            alt="Prepend Icon"
+          >
+        </template>
+      </AppInput>
       <AppInput
         v-model="brandValueLocal"
         clearable
         label="Brand"
         placeholder="Enter Brand"
         class="product-information-header__input"
-      />
+      >
+      <template #prepend>
+          <img
+            src="src/assets/svg/search-normal.svg"
+            alt="Prepend Icon"
+          >
+        </template>
+      </AppInput>
     </div>
   </div>
 </template>
@@ -73,11 +87,16 @@ export default defineComponent({
   &__fields {
     display: flex;
     gap: 1rem;
-    // width: 50%;
     width: 100%;
     &__input {
       flex: 1;
     }
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-information-header__fields {
+    width: 50%;
   }
 }
 </style>
