@@ -56,6 +56,7 @@ export default defineComponent({
   display: flex;
   background-color: var(--vt-c-white-soft);
   flex-grow: 1;
+  max-width: 1280px;
 
   &__overlay {
     position: fixed;

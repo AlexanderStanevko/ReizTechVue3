@@ -34,7 +34,6 @@ import {
   computed,
   defineComponent,
   ref,
-  onMounted,
   watch,
 } from 'vue'
 import ProductInformationHeader from 'components/Product/ProductInformationHeader.vue'
@@ -44,6 +43,7 @@ import AppSpinner from 'components/App/AppSpinner.vue'
 import { useProductStore } from 'stores/ProductStore'
 import { customDebounce, responsive } from 'utils'
 import type { ProductItem } from 'types'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'ProductsPage',
@@ -54,10 +54,12 @@ export default defineComponent({
     ProductInformationDocumentList,
   },
   setup() {
+    const productStore = useProductStore()
+    const route = useRoute()
     const title = ref('')
     const brand = ref('')
     const isLoading = ref(false)
-    const productStore = useProductStore()
+
     const productList = computed<ProductItem[]>(() => productStore.productList)
 
     const fetchProducts = async () => {
@@ -110,10 +112,15 @@ export default defineComponent({
         if (tValue.length >= 3 || bValue.length >= 3) searchProductsByTitleOrBrand(tValue, bValue)
       },
     )
-
-    onMounted(async () => {
-      await fetchProducts()
-    })
+    watch(
+      () => route.name,
+      async (val) => {
+        if (val === 'ProductsPage') {
+          await fetchProducts()
+        }
+      },
+      { immediate: true },
+    )
 
     return {
       ...responsive,

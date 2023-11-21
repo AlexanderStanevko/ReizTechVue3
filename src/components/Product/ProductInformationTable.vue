@@ -1,5 +1,13 @@
 <template>
   <div>
+    <!-- <AppTable
+      :columns="tableColumns"
+      :rows="productList"
+      row-key="id"
+      selection="multiple"
+      :sortableColumns="['title', 'category']"
+      v-model:selectedRows="selected"
+    /> -->
     <AppTable
       :columns="tableColumns"
       :rows="productList"
@@ -7,19 +15,28 @@
       selection="multiple"
       :sortableColumns="['title', 'category']"
       v-model:selectedRows="selected"
-    />
+    >
+      <template #body="{ row }">
+        <ProductInformationTableRow
+          :row="row"
+          @selectionChanged="handleRowSelectionChanged"
+        />
+      </template>
+    </AppTable>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, type PropType } from 'vue'
 import AppTable from 'components/App/AppTable.vue'
+import ProductInformationTableRow from 'components/Product/ProductInformationTableRow.vue'
 import type { ProductItem } from 'types'
 
 export default defineComponent({
   name: 'ProductInformationTable',
   components: {
     AppTable,
+    ProductInformationTableRow,
   },
   props: {
     productList: {
@@ -27,7 +44,7 @@ export default defineComponent({
     },
   },
   setup() {
-    const selected = ref([])
+    const selected = ref<ProductItem[]>([])
     const tableColumns = ref([
       { name: 'title', label: 'Title' },
       { name: 'category', label: 'Category' },
@@ -37,59 +54,26 @@ export default defineComponent({
       { name: 'rating', label: 'Rating' },
     ])
 
-    const tableRows = ref([
-      {
-        id: 1, title: 'asdad 9', category: 'amartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-      {
-        id: 2, title: 'ghfghfg 9', category: 'bmartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-      {
-        id: 3, title: 'rtyry 9', category: 'cmartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-      {
-        id: 4, title: 'rtyrty 9', category: 'dmartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-      {
-        id: 5, title: 'xcvxv 9', category: 'emartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-      {
-        id: 6, title: 'iPcxvcxvhone 9', category: 'fmartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-      {
-        id: 7, title: 'ttt 9', category: 'gmartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-      {
-        id: 8, title: 'uioui 9', category: 'vmartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-      {
-        id: 9, title: 'cxv 9', category: 'xmartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-      {
-        id: 10, title: 'iPhone 9', category: 'ymartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-      {
-        id: 11, title: 'iPhone 9', category: 'rmartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-      {
-        id: 12, title: 'iPhone 9', category: 'tmartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-      {
-        id: 13, title: 'iPhone 9', category: 'smartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-      {
-        id: 14, title: 'iPhone 9', category: 'smartphones', brand: 'Samsung', price: '$100', stock: '50', rating: '$000',
-      },
-    ])
+    const handleRowSelectionChanged = (updatedRow: ProductItem & { selected: boolean}) => {
+      if (updatedRow.selected) {
+        selected.value.push(updatedRow)
+      } else {
+        const index = selected.value.findIndex((item) => item.id === updatedRow.id)
+        if (index !== -1) {
+          selected.value.splice(index, 1)
+        }
+      }
+    }
 
     return {
       tableColumns,
-      tableRows,
       selected,
+      handleRowSelectionChanged,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
+/* Ваши стили */
 </style>

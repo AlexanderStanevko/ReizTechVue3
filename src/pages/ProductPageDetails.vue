@@ -1,6 +1,14 @@
 <template>
-  <div>
-    {{ product }}
+  <div class="flex-row justify-center">
+    <AppSpinner
+      v-if="isLoading"
+      size="50px"
+      topColor="#D0D0D0"
+      class=""
+    />
+    <div v-else>
+      {{ product }}
+    </div>
   </div>
 </template>
 
@@ -15,9 +23,13 @@ import { useProductStore } from 'stores/ProductStore'
 import { type Nullable } from 'utils'
 import type { ProductItem } from 'types'
 import { useRoute } from 'vue-router'
+import AppSpinner from 'components/App/AppSpinner.vue'
 
 export default defineComponent({
   name: 'ProductPageDetails',
+  components: {
+    AppSpinner,
+  },
   setup() {
     const productStore = useProductStore()
     const route = useRoute()

@@ -1,23 +1,29 @@
-<template>
+<!-- <template>
   <div class="app-table">
     <table class="app-table__table">
       <thead class="app-table__header">
         <tr class="app-table__row">
-          <th v-if="selection !== 'none'"
-              class="app-table__cell app-table__cell--header"
-              scope="col">
-            <input type="checkbox"
-                   v-if="selection === 'multiple'"
-                   v-model="areAllRowsSelected"
-                   @change="toggleAllRowsSelection"
-                   class="app-table__checkbox" />
+          <th
+            v-if="selection !== 'none'"
+            class="app-table__cell app-table__cell--header"
+            scope="col"
+          >
+            <input
+              type="checkbox"
+              v-if="selection === 'multiple'"
+              v-model="areAllRowsSelected"
+              @change="toggleAllRowsSelection"
+              class="app-table__checkbox"
+            />
           </th>
 
-          <th v-for="column in propColumns"
-              :key="column.name"
-              class="app-table__cell app-table__cell--header"
-              @click="sortableColumns.includes(column.name) && toggleSort(column.name)"
-              scope="col">
+          <th
+            v-for="column in propColumns"
+            :key="column.name"
+            class="app-table__cell app-table__cell--header"
+            @click="sortableColumns.includes(column.name) && toggleSort(column.name)"
+            scope="col"
+          >
             {{ column.label }}
             <span v-if="sortableColumns.includes(column.name)">
               {{
@@ -28,20 +34,121 @@
         </tr>
       </thead>
       <tbody class="app-table__body">
-        <tr v-for="row in sortedRows"
-            :key="row[propRowKey]"
-            :class="['app-table__row', { 'app-table__row--selected': row.selected }]">
-          <td v-if="selection !== 'none'"
-              class="app-table__cell">
-            <input type="checkbox"
-                   v-model="row.selected"
-                   @change="() => emitRowSelection(row)"
-                   class="app-table__checkbox" />
+
+        <tr
+          v-for="row in sortedRows"
+          :key="row[propRowKey]"
+          :class="['app-table__row', { 'app-table__row--selected': row.selected }]"
+        >
+          <td
+            v-if="selection !== 'none'"
+            class="app-table__cell"
+          >
+            <input
+              type="checkbox"
+              v-model="row.selected"
+              @change="() => emitRowSelection(row)"
+              class="app-table__checkbox"
+            />
           </td>
-          <td v-for="column in propColumns"
-              :key="column.name"
-              class="app-table__cell">{{ row[column.name] }}</td>
+          <td
+            v-for="column in propColumns"
+            :key="column.name"
+            class="app-table__cell">{{ row[column.name] }}
+          </td>
         </tr>
+
+        <tr
+          v-if="sortedRows.length === 0"
+          class="app-table__row app-table__row--nodata"
+        >
+          <td :colspan="propColumns.length + (selection !== 'none' ? 1 : 0)">
+            <slot name="nodata">
+              <div class="app-table__nodata-content">
+                <img
+                  src="src/assets/svg/attention-svgrepo-com.svg"
+                  alt="Attention"
+                  class="app-table__nodata-image"
+                />
+                There is nothing to display
+              </div>
+            </slot>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template> -->
+
+<template>
+  <div class="app-table">
+    <table class="app-table__table">
+      <thead class="app-table__header">
+        <tr class="app-table__row">
+          <th
+            v-if="selection !== 'none'"
+            class="app-table__cell app-table__cell--header"
+            scope="col"
+          >
+            <input
+              type="checkbox"
+              v-if="selection === 'multiple'"
+              v-model="areAllRowsSelected"
+              @change="toggleAllRowsSelection"
+              class="app-table__checkbox"
+            />
+          </th>
+          <th
+            v-for="column in propColumns"
+            :key="column.name"
+            class="app-table__cell app-table__cell--header"
+            @click="sortableColumns.includes(column.name) && toggleSort(column.name)"
+            scope="col"
+          >
+            {{ column.label }}
+            <span v-if="sortableColumns.includes(column.name)">
+              {{
+                sortState.column === column.name
+                  ? sortState.direction === 'asc'
+                    ? '↑'
+                    : '↓'
+                  : ''
+              }}
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="app-table__body">
+        <template
+          v-for="row in sortedRows"
+          :key="row[propRowKey]"
+        >
+          <slot
+            name="body"
+            :row="row"
+          >
+            <tr :class="['app-table__row', { 'app-table__row--selected': row.selected }]">
+              <td
+                v-if="selection !== 'none'"
+                class="app-table__cell"
+              >
+                <input
+                  type="checkbox"
+                  v-model="row.selected"
+                  @change="() => emitRowSelection(row)"
+                  class="app-table__checkbox"
+                />
+              </td>
+              <td
+                v-for="column in propColumns"
+                :key="column.name"
+                class="app-table__cell"
+              >
+                {{ row[column.name] }}
+              </td>
+            </tr>
+          </slot>
+        </template>
         <tr
           v-if="sortedRows.length === 0"
           class="app-table__row app-table__row--nodata"
@@ -207,7 +314,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .app-table {
   &__table {
     width: 100%;
