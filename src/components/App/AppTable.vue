@@ -20,7 +20,9 @@
               scope="col">
             {{ column.label }}
             <span v-if="sortableColumns.includes(column.name)">
-              {{ sortState.column === column.name ? (sortState.direction === 'asc' ? '↑' : '↓') : '' }}
+              {{
+                sortState.column === column.name ? (sortState.direction === 'asc' ? '↑' : '↓') : ''
+              }}
             </span>
           </th>
         </tr>
@@ -263,23 +265,6 @@ export default defineComponent({
   &__cell:first-child, &__cell:last-child {
     padding-left: 24px;
     padding-right: 24px;
-  }
-}
-
-// Стили для скроллбара
-::-webkit-scrollbar {
-  height: 4px;
-  width: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-  &:hover {
-    background: #555;
   }
 }
 </style>
