@@ -1,5 +1,13 @@
 <template>
   <div>
+    <!-- <AppTable
+      :columns="tableColumns"
+      :rows="productList"
+      row-key="id"
+      selection="single"
+      :sortableColumns="['title', 'category']"
+      v-model:selectedRows="selected"
+    /> -->
     <AppTable
       :columns="tableColumns"
       :rows="productList"
@@ -8,10 +16,10 @@
       :sortableColumns="['title', 'category']"
       v-model:selectedRows="selected"
     >
-      <template #body="{ row }">
+      <template #body="{ row, selectionMode }">
         <ProductInformationTableRow
           :row="row"
-          @selectionChanged="handleRowSelectionChanged"
+          @selectionChanged="(item) => handleRowSelectionChanged(item, selectionMode)"
         />
       </template>
     </AppTable>
@@ -46,14 +54,27 @@ export default defineComponent({
       { name: 'rating', label: 'Rating' },
     ])
 
-    const handleRowSelectionChanged = (updatedRow: ProductItem & { selected: boolean }) => {
-      const existingIndex = selected.value.findIndex((item) => item.id === updatedRow.id)
-      if (updatedRow.selected && existingIndex === -1) {
-        selected.value = [...selected.value, updatedRow]
-      } else if (!updatedRow.selected && existingIndex !== -1) {
+    const handleRowSelectionChanged = (
+      updatedRow: ProductItem & { selected: boolean },
+      selectionMode: string,
+    ) => {
+      if (selectionMode === 'none') return
+
+      const index = selected.value.findIndex((item) => item.id === updatedRow.id)
+
+      if (selectionMode === 'single') {
+        selected.value = updatedRow.selected ? [updatedRow] : []
+        return
+      }
+
+      if (updatedRow.selected) {
+        if (index === -1) {
+          selected.value = [...selected.value, updatedRow]
+        }
+      } else if (index !== -1) {
         selected.value = [
-          ...selected.value.slice(0, existingIndex),
-          ...selected.value.slice(existingIndex + 1),
+          ...selected.value.slice(0, index),
+          ...selected.value.slice(index + 1),
         ]
       }
     }
