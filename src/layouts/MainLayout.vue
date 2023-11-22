@@ -56,7 +56,6 @@ export default defineComponent({
   display: flex;
   background-color: var(--vt-c-white-soft);
   flex-grow: 1;
-  max-width: 1280px;
 
   &__overlay {
     position: fixed;
@@ -89,13 +88,13 @@ export default defineComponent({
         left: 0;
       }
     }
-}
+  }
 
   &__content {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
     padding: 2rem;
+    flex-grow: 1;
     overflow-y: auto;
   }
 

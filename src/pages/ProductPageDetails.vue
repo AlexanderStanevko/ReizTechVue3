@@ -6,7 +6,10 @@
       topColor="#D0D0D0"
       class=""
     />
-    <div v-else>
+    <div
+      v-else
+      class="json-renderer"
+    >
       {{ product }}
     </div>
   </div>
@@ -59,3 +62,8 @@ export default defineComponent({
   },
 })
 </script>
+<style scoped lang="scss">
+.json-renderer {
+  white-space: pre-wrap;
+}
+</style>
