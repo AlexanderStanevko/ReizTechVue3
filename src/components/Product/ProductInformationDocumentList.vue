@@ -1,13 +1,26 @@
 <template>
   <div class="document-list">
     <template v-if="products.length">
+      <div class="document-list__sort-header">
+        <span class="document-list__sort-label">Sort By:</span>
+        <AppButton
+          buttonText="Title"
+          class="document-list__sort-button"
+          @click="sortBy('title')"
+        />
+        <AppButton
+          buttonText="Brand"
+          class="document-list__sort-button"
+          @click="sortBy('brand')"
+        />
+      </div>
       <AppButton
         :buttonText="selectAllText"
         class="mb-30"
         @click="onSelectAll"
       />
       <ProductInformationDocumenListItem
-        v-for="(item, itemIdx) in products"
+        v-for="(item, itemIdx) in sortedProducts"
         :key="`${itemIdx}_${item.id}`"
         :item="item"
         :isSelected="selectedCards.includes(item)"
@@ -25,7 +38,11 @@
 
 <script lang="ts">
 import {
-  defineComponent, type PropType, ref, computed,
+  defineComponent,
+  type PropType,
+  ref,
+  computed,
+  watch,
 } from 'vue'
 import type { ProductItem } from 'types'
 import ProductInformationDocumenListItem from 'components/Product/ProductInformationDocumenListItem.vue'
@@ -46,6 +63,9 @@ export default defineComponent({
   emits: ['selectItem'],
   setup(props, { emit }) {
     const selectedCards = ref<ProductItem[]>([])
+    const sortedProducts = ref<ProductItem[]>([])
+    const sortDirection = ref<'asc' | 'desc'>('asc')
+    const currentSortField = ref<'title' | 'brand' | ''>('')
 
     const isAllSelected = computed(() => selectedCards.value.length === props.products.length)
 
@@ -70,11 +90,34 @@ export default defineComponent({
       emit('selectItem', selectedCards.value)
     }
 
+    const sortBy = (field: 'title' | 'brand') => {
+      if (currentSortField.value === field) {
+        sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
+      } else {
+        currentSortField.value = field
+        sortDirection.value = 'asc'
+      }
+      sortedProducts.value = [...props.products].sort((a, b) => (sortDirection.value === 'asc'
+        ? a[field].localeCompare(b[field])
+        : b[field].localeCompare(a[field])))
+    }
+
+    watch(
+      () => props.products,
+      (newProducts) => {
+        sortedProducts.value = newProducts
+      },
+
+      { immediate: true },
+    )
+
     return {
       selectedCards,
       selectAllText,
+      sortedProducts,
       onSelectItem,
       onSelectAll,
+      sortBy,
     }
   },
 })
@@ -98,6 +141,26 @@ export default defineComponent({
     padding: 20px;
     font-style: italic;
     color: var(--vt-c-divider-dark-2);
+  }
+
+  &__sort-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  &__sort-label {
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 1.1em;
+  }
+
+  &__sort-button {
+    margin-right: 10px;
+  }
+
+  &__select-all {
+    margin-bottom: 20px;
   }
 }
 </style>
