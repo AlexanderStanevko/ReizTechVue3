@@ -28,9 +28,7 @@ export default defineComponent({
   },
   setup(props) {
     const imagePath = computed(() => {
-      debugger
       const imgUrl = new URL(`/src/assets/svg/menu-items/${props.item.icon}`, import.meta.url).href
-      console.log('ASSETS ', imgUrl)
       return imgUrl
     })
     return {

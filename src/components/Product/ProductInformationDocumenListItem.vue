@@ -1,12 +1,13 @@
 <template>
   <div
     class="mobile-card"
-    @click="goToEditLine"
+    :class="{ 'mobile-card--selected': isSelected }"
+    @click="onSelectItem"
   >
     <section
       class="mobile-card__section"
     >
-      <div class="flex-row justify-between">
+      <div class="flex-row justify-between gap-20">
         <div class="full-width">
           <div class="full-width mb-20">
             <div class="mobile-card__label">
@@ -14,7 +15,9 @@
             </div>
 
             <div class="mobile-card__value">
-              {{ item.title }}
+              <RouterLink :to="{ name: 'ProductPageDetails', params: { productId: item.id } }">
+                {{ item.title }}
+              </RouterLink>
             </div>
           </div>
 
@@ -87,15 +90,29 @@ export default defineComponent({
       type: Object as PropType<ProductItem>,
       default: () => ({}),
     },
+    isSelected: {
+      type: Boolean,
+      default: false,
+    },
   },
-  emits: ['onSelectLine'],
-  setup() {
-    const goToEditLine = () => {
+  emits: ['selectItem'],
+  setup(props, { emit }) {
+    const onSelectItem = () => {
+      emit('selectItem', props.item)
     }
 
     return {
-      goToEditLine,
+      onSelectItem,
     }
   },
 })
 </script>
+<style scoped lang="scss">
+.mobile-card {
+  transition: background-color 0.5s ease;
+
+  &--selected {
+    background-color: #e3e8f7;
+  }
+}
+</style>

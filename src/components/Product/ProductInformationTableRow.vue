@@ -49,10 +49,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style scoped lang="scss">
-.app-table__cell a {
-  text-decoration: none;
-  color: var(--vt-c-primary);
-}
-</style>
