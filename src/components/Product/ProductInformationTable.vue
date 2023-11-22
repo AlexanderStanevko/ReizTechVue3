@@ -27,6 +27,7 @@ import type { ProductItem, TableRow } from 'types'
 import type { Nullable } from 'utils'
 
 interface AppTableMethods {
+  // eslint-disable-next-line no-unused-vars
   emitRowSelection: (row: TableRow) => void;
 }
 
