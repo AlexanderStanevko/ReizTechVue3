@@ -12,7 +12,7 @@
       >
         <template #prepend>
           <img
-            src="src/assets/svg/search-normal.svg"
+            src="@/assets/svg/search-normal.svg"
             alt="Prepend Icon"
           >
         </template>
@@ -27,7 +27,7 @@
       >
       <template #prepend>
           <img
-            src="src/assets/svg/search-normal.svg"
+            src="@/assets/svg/search-normal.svg"
             alt="Prepend Icon"
           >
         </template>

@@ -34,7 +34,7 @@
       >
         <slot name="clear">
           <img
-            src="src/assets/svg/clear-icon.svg"
+            :src="clearIconImagPath"
             alt="Clear"
           />
         </slot>
@@ -82,7 +82,7 @@ export default defineComponent({
     },
   },
   emits: ['update:modelValue'],
-  setup(props, { emit, slots }) {
+  setup(props, { emit }) {
     const uuid = UniqueID().getID()
     const isFocused = ref(false)
     const modelValueLocal = computed({
@@ -90,24 +90,21 @@ export default defineComponent({
       set: (val) => emit('update:modelValue', val),
     })
 
+    const clearIconImagPath = computed(() => {
+      const imgUrl = new URL('/src/assets/svg/clear-icon.svg', import.meta.url).href
+      return imgUrl
+    })
+
     const clearInput = () => {
       emit('update:modelValue', '')
     }
-
-    const computePaddingLeft = computed(
-      () => (slots.prepend ? '36px' : '12px'),
-    )
-    const computePaddingRight = computed(
-      () => ((slots.append || (props.clearable && modelValueLocal.value)) ? '36px' : '12px'),
-    )
 
     return {
       modelValueLocal,
       uuid,
       isFocused,
+      clearIconImagPath,
       clearInput,
-      computePaddingLeft,
-      computePaddingRight,
     }
   },
 })

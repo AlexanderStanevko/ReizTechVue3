@@ -1,7 +1,7 @@
 <template>
   <div class="profile-avatar">
     <img
-      :src="avatarPath"
+      :src="imagePath"
       alt="Profile Avatar"
       class="profile-avatar__image"
     />
@@ -9,15 +9,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 
 export default defineComponent({
   name: 'ProfileAvatar',
   props: {
-    avatarPath: {
+    avatarName: {
       type: String,
       required: true,
     },
+  },
+  setup(props) {
+    const imagePath = computed(() => {
+      const imgUrl = new URL(`/src/assets/svg/${props.avatarName}`, import.meta.url).href
+      return imgUrl
+    })
+    return {
+      imagePath,
+    }
   },
 })
 </script>

@@ -2,7 +2,7 @@
   <div class="notification">
     <img
       class="notification__icon"
-      src="src/assets/svg/notification-bing.svg"
+      src="@/assets/svg/notification-bing.svg"
       alt="Notification"
     />
     <div

@@ -66,7 +66,7 @@ export default defineComponent({
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 99;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.7s ease;
 
     &--visible {
       opacity: 1;

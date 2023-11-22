@@ -6,7 +6,7 @@
       @click="toggleSidebar"
     >
     <img
-      src="src/assets/svg/menu-hamburger.svg"
+      src="@/assets/svg/menu-hamburger.svg"
       alt="Prepend Icon"
     >
     </div>
@@ -18,14 +18,14 @@
     >
       <template #prepend>
         <img
-          src="src/assets/svg/search-normal.svg"
+          src="@/assets/svg/search-normal.svg"
           alt="Prepend Icon"
         >
       </template>
    </AppInput>
    <div class="main-header__profile-section">
      <ProfileNotification badgeColor="red"/>
-     <ProfileAvatar avatarPath="src/assets/svg/profile-avatar.svg" />
+     <ProfileAvatar avatarName="profile-avatar.svg" />
    </div>
 
   </header>

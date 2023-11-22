@@ -75,7 +75,7 @@
             <slot name="nodata">
               <div class="app-table__nodata-content">
                 <img
-                  src="src/assets/svg/attention-svgrepo-com.svg"
+                  src="@/assets/svg/attention-svgrepo-com.svg"
                   alt="Attention"
                   class="app-table__nodata-image"
                 />

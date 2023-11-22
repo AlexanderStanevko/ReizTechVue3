@@ -3,7 +3,7 @@
     class="menu-item"
   >
     <img
-      :src="`src/assets/svg/menu-items/${item.icon}`"
+      :src="imagePath"
       :alt="item.title"
       class="menu-item__icon"
     />
@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import type { MenuItem } from 'types'
 
@@ -25,6 +25,17 @@ export default defineComponent({
       type: Object as PropType<MenuItem>,
       required: true,
     },
+  },
+  setup(props) {
+    const imagePath = computed(() => {
+      debugger
+      const imgUrl = new URL(`/src/assets/svg/menu-items/${props.item.icon}`, import.meta.url).href
+      console.log('ASSETS ', imgUrl)
+      return imgUrl
+    })
+    return {
+      imagePath,
+    }
   },
 })
 </script>
