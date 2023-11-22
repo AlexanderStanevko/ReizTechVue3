@@ -2,8 +2,7 @@ import { defineStore } from 'pinia'
 import type { ProductItem } from 'types'
 import type { FetchAllProductsResponse } from 'types/response'
 import type { SearchProductsRequest } from 'types/request'
-import { handleAPIRequest } from 'utils'
-import type { Nullable } from 'utils'
+import { handleAPIRequest, type Nullable } from 'utils'
 
 interface ProductState {
   isLoading: boolean;

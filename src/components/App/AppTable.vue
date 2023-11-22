@@ -246,10 +246,6 @@ export default defineComponent({
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 
-  &__header, &__body {
-
-  }
-
   &__row {
     transition: background-color 0.3s ease;
 

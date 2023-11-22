@@ -1,40 +1,20 @@
-// .mobile-card {
-//   display: flex;
-//   flex-direction: column;
-
-//   &__value {
-//     color: rgba(var(--vt-c-black), 0.87);
-//     font-size: 18px;
-//     line-height: 21px;
-//   }
-
-//   &__label {
-//     color: rgba(var(--vt-c-black), 0.87);
-//     font-weight: 400;
-//     font-size: 14px;
-//     line-height: 16px;
-//     opacity: 0.5
-//   }
-// }
-
-
 .mobile-card {
   display: flex;
   flex-direction: column;
-  width: 100%; // Растягиваем карточку на всю ширину
-  background-color: white; // Устанавливаем белый фон
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Добавляем тень
-  border-radius: 4px; // Слегка закругляем углы
+  width: 100%; 
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 
   &__section {
-    padding: 15px; // Отступы внутри каждого раздела
+    padding: 15px;
   }
 
   &__value {
     color: rgba(var(--vt-c-black), 0.87);
     font-size: 18px;
     line-height: 21px;
-    margin-bottom: 5px; // Отступы между лейблом и значением
+    margin-bottom: 5px;
   }
 
   &__label {
@@ -43,6 +23,6 @@
     font-size: 14px;
     line-height: 16px;
     opacity: 0.5;
-    margin-bottom: 3px; // Отступы между элементами
+    margin-bottom: 3px;
   }
 }

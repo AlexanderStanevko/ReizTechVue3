@@ -155,7 +155,6 @@ export default defineComponent({
 
 .prepend-icon, .clear-icon {
   display: flex;
-  // width: 24px;
   align-items: center;
   position: absolute;
   height: 100%;
