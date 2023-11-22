@@ -1,25 +1,18 @@
 <template>
   <div>
-    <!-- <AppTable
-      :columns="tableColumns"
-      :rows="productList"
-      row-key="id"
-      selection="single"
-      :sortableColumns="['title', 'category']"
-      v-model:selectedRows="selected"
-    /> -->
     <AppTable
+      ref="appTableRef"
       :columns="tableColumns"
       :rows="productList"
       row-key="id"
-      selection="single"
+      selection="multiple"
       :sortableColumns="['title', 'category']"
       v-model:selectedRows="selected"
     >
-      <template #body="{ row, selectionMode }">
+      <template #body="{ row }">
         <ProductInformationTableRow
           :row="row"
-          @selectionChanged="(item) => handleRowSelectionChanged(item, selectionMode)"
+          @selectionChanged="(item) => handleRowSelectionChanged(item)"
         />
       </template>
     </AppTable>
@@ -30,7 +23,12 @@
 import { defineComponent, ref, type PropType } from 'vue'
 import AppTable from 'components/App/AppTable.vue'
 import ProductInformationTableRow from 'components/Product/ProductInformationTableRow.vue'
-import type { ProductItem } from 'types'
+import type { ProductItem, TableRow } from 'types'
+import type { Nullable } from 'utils'
+
+interface AppTableMethods {
+  emitRowSelection: (row: TableRow) => void;
+}
 
 export default defineComponent({
   name: 'ProductInformationTable',
@@ -45,6 +43,7 @@ export default defineComponent({
   },
   setup() {
     const selected = ref<ProductItem[]>([])
+    const appTableRef = ref<Nullable<AppTableMethods>>(null)
     const tableColumns = ref([
       { name: 'title', label: 'Title' },
       { name: 'category', label: 'Category' },
@@ -53,41 +52,18 @@ export default defineComponent({
       { name: 'stock', label: 'Stock' },
       { name: 'rating', label: 'Rating' },
     ])
-
     const handleRowSelectionChanged = (
-      updatedRow: ProductItem & { selected: boolean },
-      selectionMode: string,
+      updatedRow: TableRow,
     ) => {
-      if (selectionMode === 'none') return
-
-      const index = selected.value.findIndex((item) => item.id === updatedRow.id)
-
-      if (selectionMode === 'single') {
-        selected.value = updatedRow.selected ? [updatedRow] : []
-        return
-      }
-
-      if (updatedRow.selected) {
-        if (index === -1) {
-          selected.value = [...selected.value, updatedRow]
-        }
-      } else if (index !== -1) {
-        selected.value = [
-          ...selected.value.slice(0, index),
-          ...selected.value.slice(index + 1),
-        ]
-      }
+      appTableRef.value?.emitRowSelection(updatedRow)
     }
 
     return {
       tableColumns,
+      appTableRef,
       selected,
       handleRowSelectionChanged,
     }
   },
 })
 </script>
-
-<style lang="scss" scoped>
-/* Ваши стили */
-</style>

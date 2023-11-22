@@ -44,7 +44,6 @@
           <slot
             name="body"
             :row="row"
-            :selectionMode="selection"
           >
             <tr :class="['app-table__row', { 'app-table__row--selected': row.selected }]">
               <td
@@ -53,8 +52,8 @@
               >
                 <input
                   type="checkbox"
-                  v-model="row.selected"
-                  @change="() => emitRowSelection(row)"
+                  :checked="row.selected"
+                  @change="() => handleCheckboxChange(row)"
                   class="app-table__checkbox"
                 />
               </td>
@@ -95,17 +94,7 @@ import {
   defineComponent, ref, computed, watch, toRefs,
 } from 'vue'
 import type { PropType } from 'vue'
-
-interface TableColumn {
-  name: string;
-  label: string;
-}
-
-interface TableRow {
-  id: number | string;
-  selected?: boolean;
-  [key: string]: any;
-}
+import type { TableColumn, TableRow } from 'types'
 
 export default defineComponent({
   name: 'AppTable',
@@ -136,7 +125,7 @@ export default defineComponent({
     },
   },
   emits: ['update:selectedRows'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const {
       rows: propRows,
       columns: propColumns,
@@ -184,30 +173,32 @@ export default defineComponent({
       emit('update:selectedRows', internalRows.value.filter((r) => r.selected))
     }
 
-    const updateMainCheckboxState = () => {
-      const areAllSelected = internalRows.value.every((row) => row.selected)
-      const areSomeSelected = internalRows.value.some((row) => row.selected)
-      areAllRowsSelected.value = areAllSelected
-      const mainCheckbox = document.querySelector('.app-table__checkbox')
-      if (mainCheckbox) {
-        (mainCheckbox as HTMLInputElement).indeterminate = areSomeSelected && !areAllSelected
-      }
-    }
-
     const emitRowSelection = (selectedRow: TableRow) => {
+      if (propSelection.value === 'none') return
+
       if (propSelection.value === 'single') {
         internalRows.value = internalRows.value.map((row) => ({
           ...row,
           selected: row.id === selectedRow.id,
         }))
+        emit('update:selectedRows', selectedRow.selected ? [selectedRow] : [])
       } else {
         internalRows.value = internalRows.value.map((row) => (
           row.id === selectedRow.id ? { ...row, selected: !row.selected } : row
         ))
-        updateMainCheckboxState()
+        const updatedSelectedRows = internalRows.value.filter((row) => row.selected)
+        emit('update:selectedRows', updatedSelectedRows)
       }
-      emit('update:selectedRows', internalRows.value.filter((r) => r.selected))
     }
+
+    const handleCheckboxChange = (row: TableRow) => {
+      const updatedRow = { ...row, selected: !row.selected }
+      emitRowSelection(updatedRow)
+    }
+
+    expose({
+      emitRowSelection,
+    })
 
     watch(
       () => propRows.value,
@@ -236,10 +227,10 @@ export default defineComponent({
       sortedRows,
       sortState,
       areAllRowsSelected,
+      handleCheckboxChange,
       toggleAllRowsSelection,
       emitRowSelection,
       toggleSort,
-      // updateSelection,
     }
   },
 })
